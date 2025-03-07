@@ -1,35 +1,63 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import ReactMarkdown from 'react-markdown'
+import remarkBreaks from "remark-breaks";
+
 import './App.css'
 
+const defaultMarkdown = `
+# Welcome to my React Markdown Previewer!
+
+## This is a sub-heading...
+### And here's some other cool stuff:
+
+Heres some code, \`<div></div>\`, between 2 backticks.
+
+\`\`\`
+// this is multi-line code:
+
+function anotherExample(firstLine, lastLine) {
+  if (firstLine == '\`\`\`' && lastLine == '\`\`\`') {
+    return multiLineCode;
+  }
+}
+\`\`\`
+
+You can also make text **bold**... whoa!
+Or _italic_.
+Or... **_both!_**
+
+There's also [links](https://www.freecodecamp.com), and
+> Block Quotes!
+
+![React Logo w/ Text](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png)
+
+- And of course there are lists.
+  - Some are bulleted.
+      - With different indentation levels.
+        - That look like this.
+`;
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [markdownText, setMarkdownText] = useState(defaultMarkdown);
 
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h1 style={{ textAlign: "center" }}>Markdown Previewer</h1>
+        <div className="boxes-container">
+          <textarea
+            name="editor"
+            id="editor"
+            value={markdownText}
+            onChange={(e) => setMarkdownText(e.target.value)}
+          ></textarea>
+          <div id="preview">
+            <ReactMarkdown remarkPlugins={[remarkBreaks]}>{markdownText}</ReactMarkdown>
+          </div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
